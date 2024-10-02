@@ -1,13 +1,17 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet, ImageBackground } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
+    const navigation=useNavigation();
     return (
         <ImageBackground 
             source={require('../../assets/images/background.png')} 
             style={styles.background}
         >
-            <TouchableOpacity style={styles.loginButton} onPress={() => {}}>
+            <TouchableOpacity 
+            onPress={()=>navigation.navigate("Login")}
+            style={styles.loginButton}>
                 <Text style={styles.buttonText}>Login</Text>
             </TouchableOpacity>
             <View style={styles.content}>
