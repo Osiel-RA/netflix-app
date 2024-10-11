@@ -8,27 +8,27 @@ const LoginScreen = () => {
                 source={require('../../assets/images/netflix_logo.png')} // Dos puntos para subir dos niveles
                 style={styles.logo}
             />
-            <Text style={styles.title}>Sign in</Text>
+            <Text style={styles.title}>Registra tus datos</Text>
             <TextInput 
                 style={styles.input} 
-                placeholder="EMAIL ADRESS" 
+                placeholder="CORREO" 
                 keyboardType="email-address" 
                 placeholderTextColor="#999"
             />
             <TextInput 
                 style={styles.input} 
-                placeholder="PASSWORD" 
+                placeholder="CONTRASEÑA" 
                 secureTextEntry 
                 placeholderTextColor="#999"
             />
             <TouchableOpacity style={styles.button} onPress={() => {}}>
-                <Text style={styles.buttonText}>    Login    </Text>
+                <Text style={styles.buttonText}>    INICIO DE SESION    </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { /* link */ }}>
-                <Text style={styles.forgotPassword}>Forgot your password?</Text>
+                <Text style={styles.forgotPassword}>Olvidaste tu contraseña?</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => { /* link */ }}>
-                <Text style={styles.newNetflix}>¿New to netflix? Sign up now.</Text>
+                <Text style={styles.newNetflix}>¿Nuevo en Netflix? Registrate.</Text>
             </TouchableOpacity>
             <Text style={styles.message}>This page is protected by Google CAPTCHA to
             ensure you're not a bot.</Text>
