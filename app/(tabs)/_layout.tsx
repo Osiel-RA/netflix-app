@@ -10,14 +10,12 @@ const Stack = createNativeStackNavigator();
 
 const AppLayout = () => {
     return (
-        <NavigationContainer>
-            <Stack.Navigator initialRouteName="HomeScreen">  
+        <Stack.Navigator initialRouteName="HomeScreen">  
                 <Stack.Screen name="HomeScreen" component={HomeScreen} />
                 <Stack.Screen name="Login" component={LoginScreen} />
                 
                 {/* más pantallas aquí */}
-            </Stack.Navigator>
-        </NavigationContainer>
+        </Stack.Navigator>
     );
 };
 
