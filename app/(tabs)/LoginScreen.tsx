@@ -1,4 +1,6 @@
+import { LoginInterface } from "@/interfaces/LoginInterface";
 import React from "react";
+import { Controller, useForm } from "react-hook-form";
 import {
   View,
   Text,
@@ -7,42 +9,108 @@ import {
   StyleSheet,
   Image,
 } from "react-native";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const API_BASE = "http://192.168.1.11:8000";
+
+const schema = Yup.object().shape({
+  username: Yup.string()
+    .email("Formato de correo incorrecto.")
+    .required("Correo es obligatorio."),
+  password: Yup.string().required("Contraseña es obligatoria."),
+});
 
 const LoginScreen = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginInterface>({
+    resolver: yupResolver(schema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  const onSubmit = async (data: LoginInterface) => {
+    try {
+      console.log(`${API_BASE}/login`);
+      fetch(`${API_BASE}/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/document",
+        },
+        body: JSON.stringify({
+          username: data.username,
+          password: data.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => console.log(data))
+        .catch((error) => console.error("Error posting data:", error));
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Image
-        source={require("../../assets/images/netflix_logo.png")} // Dos puntos para subir dos niveles
+        source={require("../../assets/images/netflix_logo.png")}
         style={styles.logo}
       />
       <Text style={styles.title}>Registra tus datos</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="CORREO"
-        keyboardType="email-address"
-        placeholderTextColor="#999"
+
+      {/* Campo de correo */}
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="CORREO"
+            keyboardType="email-address"
+            placeholderTextColor="#999"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+        name="username"
       />
-      <TextInput
-        style={styles.input}
-        placeholder="CONTRASEÑA"
-        secureTextEntry
-        placeholderTextColor="#999"
+      {errors.username && (
+        <Text style={styles.errorText}>{errors.username.message}</Text>
+      )}
+
+      {/* Campo de contraseña */}
+      <Controller
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <TextInput
+            style={styles.input}
+            placeholder="CONTRASEÑA"
+            secureTextEntry
+            placeholderTextColor="#999"
+            onBlur={onBlur}
+            onChangeText={onChange}
+            value={value}
+          />
+        )}
+        name="password"
       />
-      <TouchableOpacity style={styles.button} onPress={() => {}}>
+      {errors.password && (
+        <Text style={styles.errorText}>{errors.password.message}</Text>
+      )}
+
+      <TouchableOpacity style={styles.button} onPress={handleSubmit(onSubmit)}>
         <Text style={styles.buttonText}> INICIO DE SESIÓN </Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          /* link */
-        }}
-      >
+
+      <TouchableOpacity onPress={() => {}}>
         <Text style={styles.forgotPassword}>Olvidaste tu contraseña?</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          /* link */
-        }}
-      >
+      <TouchableOpacity onPress={() => {}}>
         <Text style={styles.newNetflix}>¿Nuevo en Netflix? Regístrate.</Text>
       </TouchableOpacity>
       <Text style={styles.message}>
@@ -122,6 +190,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 18,
     fontWeight: "bold",
+  },
+  errorText: {
+    color: "#e50914",
+    marginBottom: 10,
+    bottom: 100,
   },
 });
 
